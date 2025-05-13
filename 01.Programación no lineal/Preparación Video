@@ -1,0 +1,15 @@
+
+Maximizar Retorno
+Minimizar Riesgo
+
+Teta: compenzación entre el riesgo y el retorno
+Teta altos = Mucho riesgo
+Teta bajas = Poco riesgo
+
+variabilidad entre el riesgo y el retorno
+
+¿Porque no guardar el maximo dentro de los ciclos?
+
+¿De que depende la complejidad del la solución del problema?
+-depende de la cantidad de variables del modelo
+-big O: exponencial
