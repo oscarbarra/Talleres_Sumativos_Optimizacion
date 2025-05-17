@@ -1,15 +1,18 @@
 
 from numpy import linspace, pi
+from sympy import sin, cos, tan, cot, sec, csc, sqrt, log, E
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, \
       convert_xor, implicit_multiplication_application
 
 transformaciones = standard_transformations + (convert_xor,implicit_multiplication_application)
+fun_especiales = {"sin":sin,"cos":cos,"tan":tan,"cot":cot,"sec":sec,"csc":csc,\
+                  "sqrt":sqrt,"log":log,"ln":log,"e":E}
 
 def valor_funcion_pivote(fun_original,lmb,rango_x,i):
     valor_xa = {"X":rango_x[i-1]}
     valor_xb = {"X":rango_x[i]}
-    local_dict_xa = {**valor_xa}
-    local_dict_xb = {**valor_xb}
+    local_dict_xa = {**valor_xa, **fun_especiales}
+    local_dict_xb = {**valor_xb, **fun_especiales}
     fxa = parse_expr(fun_original, local_dict_xa, transformations=transformaciones, evaluate=True)
     fxb = parse_expr(fun_original, local_dict_xb, transformations=transformaciones, evaluate=True)
     evaluacion = lmb*fxa + (1-lmb)*fxb
@@ -19,7 +22,7 @@ def valor_funcion_original_con_lambda(fun_original,lmd,rango_x,i):
     valor_xa = rango_x[i-1]
     valor_xb = rango_x[i]
     valor_xf = {"X":lmd*valor_xa + (1-lmd)*valor_xb}
-    local_dict_xf = {**valor_xf}
+    local_dict_xf = {**valor_xf, **fun_especiales}
     evaluacion = parse_expr(fun_original, local_dict_xf, transformations=transformaciones, evaluate=True)
     return evaluacion
 
