@@ -6,7 +6,7 @@ from sympy.parsing.sympy_parser import parse_expr, standard_transformations, \
 
 transformaciones = standard_transformations + (convert_xor,implicit_multiplication_application)
 fun_especiales = {"sin":sin,"cos":cos,"tan":tan,"cot":cot,"sec":sec,"csc":csc,\
-                  "sqrt":sqrt,"log":log,"ln":log,"e":E}
+                  "sqrt":sqrt,"log":log,"ln":log,"e":E,"pi":pi}
 
 def valor_funcion_pivote(fun_original,lmb,rango_x,i):
     valor_xa = {"X":rango_x[i-1]}
