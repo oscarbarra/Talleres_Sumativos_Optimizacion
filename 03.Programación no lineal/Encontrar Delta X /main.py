@@ -1,10 +1,13 @@
 
 import sys
-import os
+from pathlib import Path
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Derivada_numerica')))
+# Sube dos niveles: desde "Encontrar Delta X" hasta "03.Programación no lineal"
+ruta_padre = Path(__file__).resolve().parent.parent
+sys.path.append(str(ruta_padre))
 
-from der_numerica import derivada_numerica
+# Importa la función deseada
+from Derivada_numerica.der_numerica import derivada_numerica
 
 from numpy import pi
 from sympy import symbols, limit, sin, cos, tan, cot, sec, csc, sqrt, log, E
