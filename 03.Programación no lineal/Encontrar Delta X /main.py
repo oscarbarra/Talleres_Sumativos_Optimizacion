@@ -1,4 +1,11 @@
 
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Derivada_numerica')))
+
+from der_numerica import derivada_numerica
+
 from numpy import pi
 from sympy import symbols, limit, sin, cos, tan, cot, sec, csc, sqrt, log, E
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, \
@@ -34,13 +41,17 @@ def derivada_implicita(fun_original,valor_x):
 
 def main():
     # Función a la que se la buscará su derivada
-    fun_original = "1/x"
+    fun_original = "log(x)"
     # Valor de X
-    valor_x = 0.0
+    valor_x = 1000.0
+    # Valor al que tiende delta x
+    delta_x = 0.0
     # Resultado de la evaluación
-    resultado = derivada_implicita(fun_original,valor_x)
+    der_imp = derivada_implicita(fun_original,valor_x)
+    der_num = derivada_numerica(fun_original,valor_x,delta_x)
     # Muestra el resultado por consola
-    print(resultado[0])
+    print(der_imp[1])
+    print(der_num[1])
     return
 
 if __name__ == "__main__":
