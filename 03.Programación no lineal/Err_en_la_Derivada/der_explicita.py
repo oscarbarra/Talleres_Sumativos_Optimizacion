@@ -1,14 +1,4 @@
 
-import sys
-from pathlib import Path
-
-# Sube dos niveles: desde "Encontrar Delta X" hasta "03.Programación no lineal"
-ruta_padre = Path(__file__).resolve().parent.parent
-sys.path.append(str(ruta_padre))
-
-# Importa la función deseada
-from Derivada_numerica.der_numerica import derivada_numerica
-
 from numpy import pi
 from sympy import symbols, limit, sin, cos, tan, cot, sec, csc, sqrt, log, E
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, \
@@ -31,7 +21,7 @@ def valor_fun_xh(fun_original):
     evaluacion = parse_expr(fun_original, local_dict=local_dict, transformations=transformaciones, evaluate=True)
     return evaluacion
 
-def derivada_implicita(fun_original,valor_x):
+def derivada_explicita(fun_original,valor_x):
     fun_x = valor_fun_x(fun_original)
     fun_xh = valor_fun_xh(fun_original)
 
@@ -47,14 +37,10 @@ def main():
     fun_original = "log(x)"
     # Valor de X
     valor_x = 1000.0
-    # Valor al que tiende delta x
-    delta_x = 0.0
     # Resultado de la evaluación
-    der_imp = derivada_implicita(fun_original,valor_x)
-    der_num = derivada_numerica(fun_original,valor_x,delta_x)
+    der_imp = derivada_explicita(fun_original,valor_x)
     # Muestra el resultado por consola
-    print(der_imp[1])
-    print(der_num[1])
+    print(der_imp[0])
     return
 
 if __name__ == "__main__":

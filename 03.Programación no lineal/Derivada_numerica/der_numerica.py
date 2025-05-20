@@ -43,7 +43,9 @@ def derivada_numerica(fun_original,valor_x,delta_x,margen_eval=1e-6):
             return (mensaje, inf)
         
     atol = calcular_atol(derivada[0],derivada[1],epsilon=1e-8)
+    print(derivada[0], derivada[1])
     son_cercanos = isclose(derivada[0],derivada[1],rtol=1e-4,atol=atol)
+    print(son_cercanos)
     mensaje = f"La derivada de la función {fun_original} es: {derivada[0]}."
     if not (son_cercanos):
         mensaje = f"La función {fun_original} NO tiene una dervidad definida."
@@ -52,7 +54,7 @@ def derivada_numerica(fun_original,valor_x,delta_x,margen_eval=1e-6):
 
 def main():
     # Función a la que se la buscará su derivada
-    fun_original = "1/x"
+    fun_original = "x^2"
     # Valor de X
     valor_x = 0.0
     # Valor al que tiende delta x
