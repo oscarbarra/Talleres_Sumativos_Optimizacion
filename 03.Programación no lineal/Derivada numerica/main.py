@@ -38,18 +38,17 @@ def derivada_numerica(fun_original,valor_x,delta_x,margen_eval=1e-6):
         except AttributeError:
             derivada[i] = (fun_xh - fun_x) / lados_eval[i]
         except TypeError:
-            fun_derivada = f"({fun_xh}-1*({fun_x}))/{lados_eval[i]}"
-            mensaje = f"Posible asintota detectada, la función: {fun_derivada}" + \
-                f" puede tener tendencia al infinito en el punto x = {valor_x}"
-            return mensaje
+            inf = "oo"
+            mensaje = f"Posible asíntota detectada: la derivada de {fun_original} tiende a {inf} en x = {valor_x}"
+            return (mensaje, inf)
         
     atol = calcular_atol(derivada[0],derivada[1],epsilon=1e-8)
     son_cercanos = isclose(derivada[0],derivada[1],rtol=1e-4,atol=atol)
     mensaje = f"La derivada de la función {fun_original} es: {derivada[0]}."
     if not (son_cercanos):
         mensaje = f"La función {fun_original} NO tiene una dervidad definida."
-        return mensaje
-    return mensaje
+        return (mensaje, None)
+    return (mensaje, derivada[0])
 
 def main():
     # Función a la que se la buscará su derivada
@@ -61,7 +60,7 @@ def main():
     # Resultado de la evaluación
     resultado = derivada_numerica(fun_original,valor_x,delta_x)
     # Muestra el resultado por consola
-    print(resultado)
+    print(resultado[0])
     return
 
 if __name__ == "__main__":
