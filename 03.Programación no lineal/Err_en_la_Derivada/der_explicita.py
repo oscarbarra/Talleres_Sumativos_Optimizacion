@@ -27,16 +27,22 @@ def derivada_explicita(fun_original,valor_x):
 
     cociente = (fun_xh - fun_x) / h
     derivada = limit(cociente,h,0)
-    evaluacion_derivada = derivada.subs(x,valor_x).evalf()
+    eval_der = derivada.subs(x,valor_x).evalf()
 
-    mensaje = f"La derivada de la función {fun_original} es: {evaluacion_derivada}."
-    return (mensaje, evaluacion_derivada)
+    errores = ["oo", "-oo", "nan"]
+    if str(eval_der) in errores:
+        err = "err"
+        mensaje = f"Derivada de la función {fun_original} NO esta definida en el punto: x={valor_x}"
+        return (mensaje, err)
+
+    mensaje = f"La derivada de la función {fun_original} es: {eval_der}."
+    return (mensaje, eval_der)
 
 def main():
     # Función a la que se la buscará su derivada
-    fun_original = "log(x)"
+    fun_original = "1/(x-2)"
     # Valor de X
-    valor_x = 1000.0
+    valor_x = 0
     # Resultado de la evaluación
     der_imp = derivada_explicita(fun_original,valor_x)
     # Muestra el resultado por consola

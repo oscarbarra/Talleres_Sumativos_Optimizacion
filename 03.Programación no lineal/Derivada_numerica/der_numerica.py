@@ -8,59 +8,41 @@ transformaciones = standard_transformations + (convert_xor,implicit_multiplicati
 fun_especiales = {"sin":sin,"cos":cos,"tan":tan,"cot":cot,"sec":sec,"csc":csc,\
                   "sqrt":sqrt,"log":log,"ln":log,"e":E,"pi":pi}
 
-def calcular_atol(valor1, valor2, epsilon=1e-8):
-    max_val = max(abs(valor1), abs(valor2))
-    return epsilon * max_val
-
-def valor_fun_x(fun_original,valor_x):
-    local_dict = {"x":valor_x, **fun_especiales}
+def valor_fun_x(fun_original,x):
+    local_dict = {"x":x, **fun_especiales}
     evaluacion = parse_expr(fun_original, local_dict=local_dict, transformations=transformaciones, evaluate=True)
     return evaluacion
 
-def valor_fun_xh(fun_original,valor_x,h):
-    variables  = {"x":valor_x + h}
+def valor_fun_xh(fun_original,x,h):
+    variables  = {"x":x + h}
     local_dict = {**variables, **fun_especiales}
     evaluacion = parse_expr(fun_original, local_dict=local_dict, transformations=transformaciones, evaluate=True)
     return evaluacion
 
-def derivada_numerica(fun_original,valor_x,delta_x,margen_eval=1e-6):
-    lado_der = delta_x + margen_eval
-    lado_izq = delta_x - margen_eval
-
-    derivada = [None, None]
-    lados_eval = [lado_der, lado_izq]
-
-    fun_x = valor_fun_x(fun_original,valor_x)
-    for i in range(2):
-        fun_xh = valor_fun_xh(fun_original,valor_x,lados_eval[i])
-        try:
-            derivada[i] = float(((fun_xh - fun_x) / lados_eval[i]).evalf())
-        except AttributeError:
-            derivada[i] = (fun_xh - fun_x) / lados_eval[i]
-        except TypeError:
-            inf = "oo"
-            mensaje = f"Posible asíntota detectada: la derivada de {fun_original} tiende a {inf} en x = {valor_x}"
-            return (mensaje, inf)
+def derivada_numerica(fun_original,x,h):
+    fun_x = valor_fun_x(fun_original,x)
+    fun_xh = valor_fun_xh(fun_original,x,h)
+    try:
+        derivada = float(((fun_xh - fun_x) / h).evalf())
+    except AttributeError:
+        derivada = (fun_xh - fun_x) / h
+    except TypeError:
+        err = "err"
+        mensaje = f"Derivada de la función {fun_original} NO esta definida en el punto: x={x}"
+        return (mensaje, err)
         
-    atol = calcular_atol(derivada[0],derivada[1],epsilon=1e-8)
-    print(derivada[0], derivada[1])
-    son_cercanos = isclose(derivada[0],derivada[1],rtol=1e-4,atol=atol)
-    print(son_cercanos)
-    mensaje = f"La derivada de la función {fun_original} es: {derivada[0]}."
-    if not (son_cercanos):
-        mensaje = f"La función {fun_original} NO tiene una dervidad definida."
-        return (mensaje, None)
-    return (mensaje, derivada[0])
+    mensaje = f"La derivada de la función {fun_original} es: {derivada}."
+    return (mensaje, derivada)
 
 def main():
     # Función a la que se la buscará su derivada
-    fun_original = "x^2"
+    fun_original = "1/(x-2)"
     # Valor de X
-    valor_x = 0.0
+    x = 0
     # Valor al que tiende delta x
-    delta_x = 0.0
+    h = 1e-8
     # Resultado de la evaluación
-    resultado = derivada_numerica(fun_original,valor_x,delta_x)
+    resultado = derivada_numerica(fun_original,x,h)
     # Muestra el resultado por consola
     print(resultado[0])
     return
