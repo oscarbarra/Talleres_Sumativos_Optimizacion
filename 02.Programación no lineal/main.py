@@ -23,7 +23,7 @@ def es_concava(fun,valores_lmd,valores_x):
         for i in range(1, len(valores_x)):
             valor_pivote = valor_funcion_pivote(fun,lmd,valores_x,i)
             valor_fun_org_lmd = valor_funcion_original_con_lambda(fun,lmd,valores_x,i)
-            restriccion_concavidad = valor_fun_org_lmd <= valor_pivote
+            restriccion_concavidad = valor_fun_org_lmd >= valor_pivote
             if (not restriccion_concavidad):
                 return False
     return True
@@ -33,7 +33,7 @@ def es_concava_estricta(fun,valores_lmd,valores_x):
         for i in range(1, len(valores_x)):
             valor_pivote = valor_funcion_pivote(fun,lmd,valores_x,i)
             valor_fun_org_lmd = valor_funcion_original_con_lambda(fun,lmd,valores_x,i)
-            restriccion_concavidad = valor_fun_org_lmd < valor_pivote
+            restriccion_concavidad = valor_fun_org_lmd > valor_pivote
             if (not restriccion_concavidad):
                 return False
     return True
@@ -43,7 +43,7 @@ def es_convexa(fun,valores_lmd,valores_x):
         for i in range(1, len(valores_x)):
             valor_pivote = valor_funcion_pivote(fun,lmd,valores_x,i)
             valor_fun_org_lmd = valor_funcion_original_con_lambda(fun,lmd,valores_x,i)
-            restriccion_concavidad = valor_fun_org_lmd >= valor_pivote
+            restriccion_concavidad = valor_fun_org_lmd <= valor_pivote
             if (not restriccion_concavidad):
                 return False
     return True
@@ -53,7 +53,7 @@ def es_convexa_estricta(fun,valores_lmd,valores_x):
         for i in range(1, len(valores_x)):
             valor_pivote = valor_funcion_pivote(fun,lmd,valores_x,i)
             valor_fun_org_lmd = valor_funcion_original_con_lambda(fun,lmd,valores_x,i)
-            restriccion_concavidad = valor_fun_org_lmd > valor_pivote
+            restriccion_concavidad = valor_fun_org_lmd < valor_pivote
             if (not restriccion_concavidad):
                 return False
     return True
@@ -81,7 +81,7 @@ def evaluar_convexidad_y_concavidad(obj,fun,valores_lmd,valores_x):
 
 def main():
     # Objetivo de la evaluación
-    obj = "concava"
+    obj = "convexa"
     # Función a la que se le determinará si es concava o conexa
     fun = "(x -1.5)**2 + 0.5"
     # Valor de Lambda
