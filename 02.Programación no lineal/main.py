@@ -28,12 +28,32 @@ def es_concava(fun,valores_lmd,valores_x):
                 return False
     return True
 
+def es_concava_estricta(fun,valores_lmd,valores_x):
+    for lmd in valores_lmd:
+        for i in range(1, len(valores_x)):
+            valor_pivote = valor_funcion_pivote(fun,lmd,valores_x,i)
+            valor_fun_org_lmd = valor_funcion_original_con_lambda(fun,lmd,valores_x,i)
+            restriccion_concavidad = valor_fun_org_lmd < valor_pivote
+            if (not restriccion_concavidad):
+                return False
+    return True
+
 def es_convexa(fun,valores_lmd,valores_x):
     for lmd in valores_lmd:
         for i in range(1, len(valores_x)):
             valor_pivote = valor_funcion_pivote(fun,lmd,valores_x,i)
             valor_fun_org_lmd = valor_funcion_original_con_lambda(fun,lmd,valores_x,i)
             restriccion_concavidad = valor_fun_org_lmd >= valor_pivote
+            if (not restriccion_concavidad):
+                return False
+    return True
+
+def es_convexa_estricta(fun,valores_lmd,valores_x):
+    for lmd in valores_lmd:
+        for i in range(1, len(valores_x)):
+            valor_pivote = valor_funcion_pivote(fun,lmd,valores_x,i)
+            valor_fun_org_lmd = valor_funcion_original_con_lambda(fun,lmd,valores_x,i)
+            restriccion_concavidad = valor_fun_org_lmd > valor_pivote
             if (not restriccion_concavidad):
                 return False
     return True
@@ -45,22 +65,29 @@ def evaluar_convexidad_y_concavidad(obj,fun,valores_lmd,valores_x):
         mensaje = f"Porfavor ingresar un objetivo valido: {objetivos_validos}"
         return mensaje
     
-    rango_final = valores_x[1:-2] if "estricta" in obj else valores_x
-    cumple = es_concava(fun,valores_lmd,rango_final) if "concava" in obj else es_convexa(fun,valores_lmd,rango_final)
-    parte_1_mensaje = "Sí" if cumple else "No"
-    intervalo = f"[{valores_x[1]:.2f}, {valores_x[-2]:.2f}]" if "estricta" in obj else f"({valores_x[0]:.2f}, {valores_x[-1]:.2f})"
-    mensaje = f"La función {fun} {parte_1_mensaje} es {obj} en el intervalo {intervalo}"
+    evaluacion = None
+    if obj == "concava":
+        evaluacion = es_concava(fun,valores_lmd,valores_x)
+    elif obj == "convexa":
+        evaluacion = es_convexa(fun,valores_lmd,valores_x)
+    elif obj == "concava estricta":
+        evaluacion = es_concava_estricta(fun,valores_lmd,valores_x)
+    elif obj == "convexa estricta":
+        evaluacion = es_convexa_estricta(fun,valores_lmd,valores_x)
+    cumple = "Sí" if evaluacion else "No"
+    intervalo = f"[{valores_x[0]:.2f}, {valores_x[-1]:.2f}]"
+    mensaje = f"La función {fun} {cumple} es {obj} en el intervalo {intervalo}"
     return mensaje
 
 def main():
     # Objetivo de la evaluación
-    obj = "convexa estricta"
+    obj = "concava"
     # Función a la que se le determinará si es concava o conexa
-    fun = "cos(x)"
+    fun = "(x -1.5)**2 + 0.5"
     # Valor de Lambda
     valores_lmd = linspace(0,1,20)
     # Rando de evaluación
-    valores_x = linspace(0, 2*pi, 100)
+    valores_x = linspace(0.5, 2.0, 100)
     # Resultado de la evalución
     resultado = evaluar_convexidad_y_concavidad(obj,fun,valores_lmd,valores_x)
     # Muestra el resultado en consola
