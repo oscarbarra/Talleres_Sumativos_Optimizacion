@@ -1,12 +1,5 @@
 
-import sys
-from pathlib import Path
-
-# Sube dos niveles: desde "Err en la Derivada" hasta "03.Programación no lineal"
-ruta_padre = Path(__file__).resolve().parent.parent
-sys.path.append(str(ruta_padre))
-
-from Derivada_numerica.der_numerica import derivada_numerica
+from der_numerica import derivada_numerica
 from der_explicita import derivada_explicita
 
 def valor_inicial_delta_x(epsilon,x,mar_err=1e-6):
@@ -55,7 +48,7 @@ def main():
     # Función a la que se la buscará su derivada
     fun_original = "1/(x-2)"
     # Valor de X
-    valor_x = 0
+    valor_x = 2
     # Valor de epsilon
     epsilon = 1e-6
     # Resultado de la evalución
