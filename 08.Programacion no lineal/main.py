@@ -24,12 +24,16 @@ def gradiente_descendiente(fun,vars,vals,t,n):
     return
 
 def main():
-    fun = "x**2 + y**2"
+    fun = [ 
+            "x**2 + y**2",
+            "(x + 2*y -7)**2 + (2*x + y -5)**2",
+            "(x**2 + y - 11)**2 + (x + y**2 - 7)**2"
+        ]
     vars = ("x","y")
-    vals = [1,1]
+    vals = [2,2]
     t = 0.1
-    n = 1e-6
-    gradiente_descendiente(fun,vars,vals,t,n)
+    n = 1e-16
+    gradiente_descendiente(fun[1],vars,vals,t,n)
     return
 
 if __name__ == "__main__":
