@@ -7,7 +7,7 @@ from fun_aux.grad import encontrar_gradiente,evaluar_gradiente
 def mostrar_valores_consola(message,vals,mod,n):
     cant_float = 32
     cant_hypen = 70
-    print(message[0],f": {vals[0]:.{cant_float}f}, {vals[1]:.{cant_float}f}")
+    print(f"{message[0]}: {float(vals[0]):.{cant_float}f}, {float(vals[1]):.{cant_float}f}")
     print(message[1],f": {mod}")
     print("Valor eta: ",n)
     print(f"{'-':-<{cant_hypen}}")
@@ -40,7 +40,7 @@ def main():
             "(x**2 + y - 11)**2 + (x + y**2 - 7)**2"
         ]
     vars = ("x","y")
-    vals = [randint(0,10),randint(0,10)]
+    vals = [0,1]
     t = 0.1
     n = 1e-16
     gradiente_descendiente(fun[0],vars,vals,t,n)
