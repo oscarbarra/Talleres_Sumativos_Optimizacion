@@ -1,16 +1,6 @@
-from sympy import sympify
+
 from numpy import array, dot
 from fun_aux.grad import encontrar_gradiente, evaluar_gradiente
-
-def mostrar_valores_consola(message, vals, mod, n, tnew):
-    cant_float = 32
-    cant_hypen = 70
-    print(f"{message[0]} : {float(vals[0]):.{cant_float}f}, {float(vals[1]):.{cant_float}f}")
-    print(f"{message[1]} : {mod}")
-    print(f"Valor eta : {n:.{cant_float}f}")
-    print(f"Valor t   : {tnew}")
-    print(f"{'-' * cant_hypen}")
-    return
 
 def modulo_no_sqrt(grad):
     return sum(value**2 for value in grad)
@@ -23,11 +13,11 @@ def barzilai_borwein(fun, vars, xnew, xold):
     grad_new = evaluar_gradiente(grad_fun, subs_xnew)
     grad_old = evaluar_gradiente(grad_fun, subs_xold)
 
-    delta_x = array(xnew) - array(xold)
-    delta_grad = array(grad_new) - array(grad_old)
+    aux1 = array(xold) - array(xnew)
+    aux2 = array(grad_old) - array(grad_new)
 
-    num = dot(delta_x, delta_grad)
-    den = modulo_no_sqrt(delta_grad)
+    num = dot(aux1, aux2)
+    den = modulo_no_sqrt(aux2)
 
     num = num if num >= 0 else -1 *num
 
@@ -40,10 +30,8 @@ def gradiente_descendiente(fun, vars, vals, eta):
     grad = encontrar_gradiente(fun, vars, 1)
     mod = modulo_no_sqrt(grad).subs({vars[i]: vals[i] for i in range(len(vars))})
     
-    mostrar_valores_consola(["Valores iniciales", "Modulo inicial"], vals, mod, eta, None)
-
-    xnew = array(vals, dtype=float)
-    xold = array(vals, dtype=float)
+    xnew = array(vals)
+    xold = array(vals)
 
     while mod >= eta:
         subs_dict = {vars[i]: xnew[i] for i in range(len(vars))}
@@ -56,9 +44,9 @@ def gradiente_descendiente(fun, vars, vals, eta):
         xold = xnew.copy()
         xnew = xold + tnew * tglex
 
-        mostrar_valores_consola(["Valores nuevos", "Modulo nuevo"], xnew, mod, eta, tnew)
-
-    mostrar_valores_consola(["Valores final", "Modulo final"], xnew, mod, eta, tnew)
+        print("t: ",tnew)
+        print("Xnew: ",xnew)
+        print('-' * 55)
     return
 
 def main():
@@ -68,10 +56,10 @@ def main():
         "(x**2 + y - 11)**2 + (x + y**2 - 7)**2"
     ]
     variables = ("x", "y")
-    valores_iniciales = [0, 1]
-    eta = 1e-8
+    valores_iniciales = [-1,-5]
+    eta = 1e-6
 
-    gradiente_descendiente(funciones[0], variables, valores_iniciales, eta)
+    gradiente_descendiente(funciones[2], variables, valores_iniciales, eta)
 
 if __name__ == "__main__":
     main()

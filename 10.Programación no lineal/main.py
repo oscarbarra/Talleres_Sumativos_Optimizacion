@@ -2,20 +2,20 @@
 from numpy import array,dot
 from sympy import sympify,symbols,diff,hessian,sqrt
 
-def get_gradient(func:str,vars:list):
+def get_gradient(func,vars):
     func = sympify(func)
     sym_vals = [symbols(var) for var in vars]
     return [diff(func,var) for var in sym_vals]
 
-def get_hessian(func:str,vars:list):
+def get_hessian(func,vars):
     func = sympify(func)
     sym_vals = [symbols(var) for var in vars]
     return hessian(func, sym_vals)
 
-def get_module(vector:list):
+def get_module(vector):
     return sqrt(sum(val**2 for val in vector))
 
-def get_Xnew(Xold:list,evl_gradient_old:list,evl_hessian_old:list[list],t:float):
+def get_Xnew(Xold,evl_gradient_old,evl_hessian_old,t):
     inv_hessian  = evl_hessian_old.inv()                                     # Matriz
     Xnew = array(Xold) -t * dot(array(inv_hessian), array(evl_gradient_old)) # Vector
     return Xnew
@@ -25,13 +25,13 @@ def condition(Xold,Xnew):
     Xnew = array(Xnew)
     return get_module(Xnew - Xold)
 
-def newton_method(func:str,eta:float,t:float,xval:list,xsim:list):
+def newton_method(func,eta,t,xval,xsim):
     vct_gradient = get_gradient(func, xsim)# Valor simbolico
     mtx_hessian  = get_hessian(func, xsim) # Valor simbolico
 
     Xold = [0,0]
     Xnew = xval.copy()
-    while (condition(Xold,Xnew) >= eta):
+    while (condition(Xold,Xnew) > eta):
         vals_dict_old = {xsim[i]:Xnew[i] for i in range(len(xsim))}
         evl_gradient_old = [grad.subs(vals_dict_old) for grad in vct_gradient] # old
         evl_hessian_old  = mtx_hessian.subs(vals_dict_old)
@@ -52,6 +52,7 @@ def newton_method(func:str,eta:float,t:float,xval:list,xsim:list):
             aux2 = -1 *(g_cero/ (2*(g_uno - g_cero - g_cero_prima)))
 
             t_prima = max(aux2, 0.1)
+
             Xnew = (1 - t_prima) * array(Xold) + t_prima * array(Xnew)
         print("Xnew yo: ",Xnew)
     return
